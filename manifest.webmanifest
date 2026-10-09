@@ -1,0 +1,12 @@
+{
+  "name": "Cox Rowing Racer",
+  "short_name": "Cox Racer",
+  "description": "A rowing coxswain steering and race-plan practice game.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#edf5f9",
+  "theme_color": "#082f49",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#082f49">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cox Rowing Racer">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Cox Rowing Racer</title>
+<style>
+:root{--navy:#082f49;--blue:#0b6793;--sky:#cceeff;--ink:#102b3b;--muted:#597283;--line:#c8dce7;--card:#fff;--green:#147d54;--orange:#f4a340}
+*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#edf5f9;color:var(--ink)}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}button,select,input,textarea{font:inherit;touch-action:manipulation}button{cursor:pointer}
+.app{max-width:1250px;margin:auto;padding:12px;min-height:100dvh}.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:clamp(18px,3vw,24px)}.brand img{width:42px;height:42px}.tag{font-size:11px;color:var(--muted);font-weight:700}.badge{font-size:11px;border-radius:99px;padding:7px 10px;background:#dceef6;color:#174a66;font-weight:900}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 4px 14px #17425b0a}.hidden{display:none!important}h1{font-size:clamp(25px,4vw,38px);line-height:1.08;margin:0 0 8px}h2{font-size:18px;margin:0 0 10px}p{line-height:1.45}.muted,.hint{color:var(--muted);font-size:13px}.formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.field label{display:block;font-size:12px;font-weight:850;margin-bottom:5px}.field select,.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;background:#fff;color:var(--ink);min-height:44px}.field textarea{min-height:88px;resize:vertical}.primary{background:var(--blue);border-color:var(--blue);color:white}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:11px 14px;min-height:44px;font-weight:850}.btn:active{transform:scale(.985)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.planpreview{border-radius:12px;background:#f0f8fc;padding:12px;margin-top:12px;font-size:13px}.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;margin-bottom:10px}.stat{border:1px solid var(--line);border-radius:11px;padding:8px;min-width:0}.stat small{display:block;color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.stat b{display:block;font-size:clamp(14px,2vw,19px);margin-top:2px;overflow-wrap:anywhere}
+#water{height:clamp(400px,57vh,650px);min-height:400px;position:relative;overflow:hidden;border:2px solid #73b5d3;border-radius:16px;background:linear-gradient(90deg,#79c5e9,#a5def6 48%,#79c5e9);isolation:isolate}
+#water:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 29px,#e4f8ff55 30px,#e4f8ff55 32px);background-position-y:var(--water-shift,0px);opacity:.85}
+.lane{position:absolute;top:0;bottom:0;width:2px;background:#fff9;z-index:1}.lane.left{left:22%}.lane.right{right:22%}.lane.center{left:50%;border-left:2px dashed #fff9;background:transparent}.buoyrow{position:absolute;top:0;bottom:0;width:100%;pointer-events:none;z-index:2}.buoy{position:absolute;width:12px;height:12px;border-radius:50%;background:#ffb63f;border:2px solid #fff;box-shadow:0 1px 2px #17425b66}
+.lineh{position:absolute;left:22%;right:22%;height:5px;background:#193f52;z-index:3}.startline{bottom:72px}.finishline{top:35px;height:18px;background:repeating-conic-gradient(#17394c 0 25%,#fff 0 50%) 0/18px 18px}.lineLabel{position:absolute;left:50%;transform:translateX(-50%);z-index:5;font-weight:950;font-size:11px;background:#fffde9;border-radius:5px;padding:3px 7px}.finishlabel{top:10px}.startlabel{bottom:49px}
+.windbanner{position:absolute;top:64px;left:50%;transform:translateX(-50%);z-index:6;text-align:center;background:#ffffffdb;padding:7px 12px;border-radius:10px;min-width:150px;box-shadow:0 2px 9px #1234}.windarrow{font-size:28px;font-weight:950;line-height:1}.winddesc{font-size:11px;font-weight:850}.windstreak{position:absolute;height:3px;background:rgba(255,255,255,.92);z-index:2;border-radius:4px;pointer-events:none;box-shadow:0 0 5px #fff8;animation:breeze 2.2s linear infinite}@keyframes breeze{0%{translate:-120px 0;opacity:0}15%{opacity:.95}100%{translate:260px 0;opacity:0}}
+.boat{position:absolute;left:50%;bottom:94px;width:clamp(160px,24vw,220px);height:100px;transform:translateX(-50%);z-index:4;transform-origin:50% 50%;will-change:left,bottom,transform}.boat-label{position:absolute;top:0;left:50%;transform:translateX(-50%);font-size:10px;font-weight:950;background:#fffde9;padding:3px 7px;border-radius:5px;white-space:nowrap}
+.hull{position:absolute;left:50%;top:17px;transform:translateX(-50%);width:34px;height:76px;background:linear-gradient(90deg,#1b3d52,#f1f7f8 35%,#ffffff 65%,#234b60);border:2px solid #15384d;border-radius:48% 48% 44% 44% / 10% 10% 90% 90%;box-shadow:0 3px 5px #17425b44}
+.hull:after{content:"";position:absolute;left:4px;right:4px;top:13px;bottom:12px;border-left:1px solid #6d8b9c;border-right:1px solid #6d8b9c}
+.crew{position:absolute;inset:18px 0 8px;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;z-index:2}.seat{width:20px;height:5px;border-radius:2px;background:#647d8b;border:1px solid #fff}
+.oar{position:absolute;left:50%;top:var(--oy,50px);width:43px;height:2.5px;background:#8b6338;transform-origin:0 50%;z-index:3;border-radius:4px;will-change:transform}.oar:after{content:"";position:absolute;right:-5px;top:-3px;width:9px;height:7px;background:#f8ffff;border:1px solid #607987;border-radius:2px}.oar.left{transform:rotate(var(--angle,-25deg)) translateX(-1px)}.oar.right{transform:rotate(var(--angle,25deg)) translateX(-1px)}#oars{position:absolute;inset:0;z-index:3;pointer-events:none}#oars .oar{left:50%;width:42px}#oars .oar.left{left:calc(50% - 42px)}#oars .oar.left{transform-origin:100% 50%;margin-left:-1px}#oars .oar.right{transform-origin:0 50%;margin-left:0}#oars .oar.left:after{right:auto;left:-5px}.sideword{position:absolute;top:48px;font-size:9px;font-weight:950;white-space:nowrap}.sideword.bow{left:-28px}.sideword.stroke{right:-37px}
+.hudbottom{display:grid;grid-template-columns:1.2fr 1fr;gap:10px;margin-top:10px}.touchcontrols{display:grid;grid-template-columns:1fr 1fr;gap:8px}.touchcontrols .btn{min-height:54px}.bar{height:10px;background:#e0edf3;border-radius:99px;overflow:hidden;margin-top:7px}.bar span{display:block;height:100%;width:100%;background:var(--green);transition:width .15s}.callgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.callgrid button{font-size:12px;padding:8px 4px;min-height:44px}.feed{background:#f2f8fb;border-radius:10px;padding:10px;min-height:48px;font-size:13px;margin-top:8px}
+@media(max-width:720px){.app{padding:9px}.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.hudbottom{grid-template-columns:1fr}.panel{padding:11px}#water{height:52dvh;min-height:380px}.boat{bottom:83px}.topbar{align-items:flex-start}.badge{max-width:115px;text-align:center}}
+@media(max-width:390px){.formgrid{grid-template-columns:1fr 1fr;gap:8px}.field select{padding:9px;font-size:14px}.stats{gap:5px}.stat{padding:7px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><div class="brand"><img src="icon.svg" alt=""><div>Cox Rowing Racer<div class="tag">Coxswain practice • steering • race plan</div></div></div><span class="badge">iPad + keyboard</span></header>
+
+<section id="menu" class="panel">
+<h1>Plan your race.</h1>
+<p class="muted">Choose your crew and conditions, then race the course. Build speed with correctly timed strokes, steer against the wind, and earn points for staying in your lane.</p>
+<div class="formgrid">
+<div class="field"><label for="distanceChoice">Race distance</label><select id="distanceChoice"><option value="500">500 m</option><option value="1000" selected>1 000 m</option><option value="2000">2 000 m</option><option value="5000">5 000 m</option></select></div>
+<div class="field"><label for="crewChoice">Boat / crew</label><select id="crewChoice"><option value="4">Quad (4 rowers)</option><option value="8" selected>Oct (8 rowers)</option></select></div>
+<div class="field"><label for="difficulty">Difficulty</label><select id="difficulty"><option value="easy">Easy — light, slow shifts</option><option value="normal" selected>Club — changing wind</option><option value="hard">Hard — gusty conditions</option></select></div>
+<div class="field"><label for="rateChoice">Target stroke rate</label><select id="rateChoice"><option value="24">24 spm — steady</option><option value="28" selected>28 spm — race rhythm</option><option value="32">32 spm — high rate</option></select></div>
+<div class="field"><label for="planStart">Start plan</label><select id="planStart"><option>Build for 10 strokes</option><option selected>Strong start, then settle</option><option>Controlled start</option></select></div>
+<div class="field"><label for="planMiddle">Middle of race</label><select id="planMiddle"><option selected>Long and relaxed</option><option>Push the rate</option><option>Power ten every 500 m</option></select></div>
+<div class="field"><label for="planFinish">Finish plan</label><select id="planFinish"><option selected>Build over final 200 m</option><option>Power ten, then sprint</option><option>Hold rhythm to line</option></select></div>
+<div class="field"><label for="laneChoice">Starting lane position</label><select id="laneChoice"><option value="50" selected>Centre of lane</option><option value="42">Slightly Bow side</option><option value="58">Slightly Stroke side</option></select></div>
+<div class="field"><label for="notes">Cox notes (optional)</label><input id="notes" maxlength="100" placeholder="E.g. relax hands, lengthen"></div>
+</div>
+<div class="planpreview" id="planPreview">Plan preview will appear here.</div>
+<div class="actions"><button id="startRace" class="btn primary">Start race</button><button id="showGuide" class="btn">Controls & scoring</button></div>
+<div id="guide" class="hint hidden"><p><b>Keyboard:</b> ← / A = steer toward Bow (rower’s left); → / D = steer toward Stroke (rower’s right); Space = stroke; P = pause; R = reset. On iPad, hold the steering buttons and tap STROKE. The hull points forward along the course.</p><p><b>Stroke timing:</b> the boat surges forward when the blades finish the drive and release, not at the catch. Keep steering gentle and counter the wind.</p><p><b>Scoring:</b> points rise while you stay inside the lane and fall if you cross a lane boundary. Clean strokes build speed; missed rhythm slows the boat.</p></div>
+</section>
+
+<section id="raceView" class="hidden">
+<div class="stats">
+<div class="stat"><small>Race</small><b id="raceStat">1 000 m</b></div><div class="stat"><small>Distance</small><b id="distanceStat">0 m</b></div><div class="stat"><small>Time</small><b id="timeStat">00:00.0</b></div><div class="stat"><small>Points</small><b id="scoreStat">1 000</b></div><div class="stat"><small>Speed</small><b id="speedStat">0.0 m/s</b></div><div class="stat"><small>Lane</small><b id="laneStat">Centre</b></div>
+</div>
+<div id="water">
+<div class="lane left"></div><div class="lane center"></div><div class="lane right"></div><div class="buoyrow" id="buoys"></div>
+<div class="lineh finishline"></div><div class="lineLabel finishlabel">FINISH</div><div class="lineh startline"></div><div class="lineLabel startlabel">START</div>
+<div id="windStreaks"></div><div class="windbanner"><div id="windArrow" class="windarrow">↗</div><div id="windDesc" class="winddesc">Wind: changing</div></div>
+<div id="boat" class="boat"><div class="boat-label" id="boatLabel">OCT • BOW ↑</div><div class="hull"></div><div id="crew" class="crew"></div><div id="oars"></div><span class="sideword bow">BOW / PORT</span><span class="sideword stroke">STROKE / STBD</span></div>
+</div>
+<div class="hudbottom">
+<div class="panel"><h2>Steer your boat</h2><div class="touchcontrols"><button id="steerBow" class="btn">◀ BOW / LEFT</button><button id="steerStroke" class="btn">STROKE / RIGHT ▶</button></div><div class="actions"><button id="strokeBtn" class="btn primary">STROKE — SPACE</button><button id="pauseBtn" class="btn">Pause</button><button id="resetBtn" class="btn">Reset race</button><button id="menuBtn" class="btn">Race plan / menu</button></div><div class="hint">Stroke cycle: catch → drive → release → boat surge. Wind slowly changes direction and strength.</div></div>
+<div class="panel"><h2>Cox calls</h2><div class="callgrid"><button class="btn" data-call="Attention, Go!">1 · Attention, Go!</button><button class="btn" data-call="Lengthen">2 · Lengthen</button><button class="btn" data-call="Sit tall">3 · Sit tall</button><button class="btn" data-call="Relax the hands">4 · Relax hands</button><button class="btn" data-call="Power ten">5 · Power ten</button><button class="btn" data-call="Build the rate">6 · Build rate</button><button class="btn" data-call="Hold the rhythm">7 · Hold rhythm</button><button class="btn" data-call="Wind from Bow side">8 · Check Bow wind</button><button class="btn" data-call="Sprint to the line">9 · Sprint</button><button class="btn" data-call="Hold the finish">10 · Hold finish</button></div><div class="bar"><span id="laneBar"></span></div><div id="message" class="feed" aria-live="polite">Ready when you are.</div></div>
+</div>
+</section>
+</div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const menu=$('menu'),view=$('raceView'),water=$('water'),boat=$('boat');
+let cfg={},running=false,finished=false,last=0,raf=0,elapsed=0,distance=0,score=1000,x=50,heading=0,speed=0,strokePhase=0,strokePulse=0,strokeCount=0,steer=0,windAngle=Math.PI/4,windPower=1,windClock=0,waterShift=0,keys=new Set(),held=new Set(),lastStroke=-999,prevRate=28,windVary=1,joltClock=0,nextJolt=4.5;
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const rand=(a,b)=>a+Math.random()*(b-a);
+function setMsg(s){$('message').textContent=s}
+function fmt(t){let m=Math.floor(t/60),s=(t%60).toFixed(1).padStart(4,'0');return String(m).padStart(2,'0')+':'+s}
+function preview(){const crew=$('crewChoice').value==='4'?'Quad (4 rowers)':'Oct (8 rowers)';$('planPreview').innerHTML='<b>'+crew+' • '+Number($('distanceChoice').value).toLocaleString()+' m</b><br>Start: '+$('planStart').value+'. Middle: '+$('planMiddle').value+'. Finish: '+$('planFinish').value+'.<br>Difficulty: '+$('difficulty').selectedOptions[0].text+'. '+($('notes').value?'<br><b>Your note:</b> '+escapeHtml($('notes').value):'');}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+['distanceChoice','crewChoice','difficulty','rateChoice','planStart','planMiddle','planFinish','laneChoice','notes'].forEach(id=>$(id).addEventListener('input',preview));preview();
+$('showGuide').onclick=()=>$('guide').classList.toggle('hidden');
+function setupCourse(){const b=$('buoys');b.innerHTML='';for(let y=80;y<water.clientHeight;y+=80){for(const xx of [22,78]){const el=document.createElement('i');el.className='buoy';el.style.left=`calc(${xx}% - 6px)`;el.style.top=y+'px';b.appendChild(el)}}}
+function setupCrew(){const n=cfg.crew;const crew=$('crew');crew.innerHTML='';for(let i=0;i<n;i++){const s=document.createElement('div');s.className='seat';crew.appendChild(s)}const wrap=$('oars');wrap.innerHTML='';for(let i=0;i<4;i++){for(const side of ['left','right']){const o=document.createElement('div');o.className='oar '+side;o.dataset.index=i;o.dataset.side=side;o.style.top=(25+i*16)+'px';o.style.setProperty('--angle',side==='left'?'-25deg':'25deg');wrap.appendChild(o)}}$('boatLabel').textContent=(n===4?'QUAD • 8 BLADES':'OCT • 8 BLADES')+' • BOW ↑';}
+function windText(){const dirs=['N / headwind','NE / Bow quarter','E / Stroke side','SE / aft quarter','S / tailwind','SW / Bow side','W / Bow side','NW / quartering'];const idx=((Math.round((windAngle/(Math.PI*2))*8)%8)+8)%8;return dirs[idx]}
+function changeWind(){const level=cfg.difficulty==='easy'?0.55:cfg.difficulty==='hard'?1.55:1;windAngle+=rand(-0.95,0.95)*level;windPower=rand(cfg.difficulty==='easy'?0.2:cfg.difficulty==='hard'?1.1:0.65,cfg.difficulty==='easy'?1.2:cfg.difficulty==='hard'?3.1:2.1);$('windArrow').textContent=['↑','↗','→','↘','↓','↙','←','↖'][((Math.round(windAngle/(Math.PI/4))%8)+8)%8];$('windDesc').textContent=windText()+' · '+windPower.toFixed(1)+' m/s';renderWind();}
+function renderWind(){const wrap=$('windStreaks');wrap.innerHTML='';for(let i=0;i<18;i++){const e=document.createElement('div');e.className='windstreak';e.style.width=rand(35,100)+'px';e.style.left=rand(0,100)+'%';e.style.top=rand(80,water.clientHeight-15)+'px';e.style.transform=`rotate(${Math.sin(windAngle)*8}deg)`;e.style.opacity=rand(.4,.95);e.style.animationDuration=rand(1.2,2.8)+'s';e.style.animationDelay=(-rand(0,3))+'s';wrap.appendChild(e)}}
+function begin(){cfg={distance:+$('distanceChoice').value,crew:+$('crewChoice').value,difficulty:$('difficulty').value,rate:+$('rateChoice').value};menu.classList.add('hidden');view.classList.remove('hidden');setupCourse();setupCrew();reset(false);$('raceStat').textContent=cfg.distance.toLocaleString()+' m';x=+$('laneChoice').value;changeWind();running=true;finished=false;last=0;windClock=0;lastStroke=-999;setMsg('Race started. Build rhythm and keep the boat inside the lane.');raf=requestAnimationFrame(tick);}
+function reset(back=true){running=false;finished=false;cancelAnimationFrame(raf);elapsed=0;distance=0;score=1000;x=+$('laneChoice').value;heading=0;speed=0;strokePhase=0;strokePulse=0;strokeCount=0;steer=0;keys.clear();held.clear();$('distanceStat').textContent='0 m';$('timeStat').textContent='00:00.0';$('scoreStat').textContent='1 000';$('speedStat').textContent='0.0 m/s';$('laneStat').textContent='Centre';$('laneBar').style.width='100%';boat.style.left=x+'%';boat.style.transform='translateX(-50%) rotate(0deg)';document.querySelectorAll('#oars .oar').forEach(o=>o.style.setProperty('--angle',o.dataset.side==='left'?'-25deg':'25deg'));joltClock=0;nextJolt=rand(3.5,7.5);$('pauseBtn').textContent='Start';if(back){menu.classList.remove('hidden');view.classList.add('hidden')}setMsg('Ready. Tap STROKE or press Space to begin moving.');}
+function stroke(){if(!view.classList.contains('hidden')&& !finished){if(!running){running=true;last=0;raf=requestAnimationFrame(tick);$('pauseBtn').textContent='Pause'}strokeCount++;strokePhase=0;strokePulse=1;lastStroke=elapsed;setMsg('Stroke '+strokeCount+' — drive begins; boat accelerates through the pull.');}}
+function togglePause(){if(finished)return;if(!running){running=true;last=0;raf=requestAnimationFrame(tick);$('pauseBtn').textContent='Pause';setMsg('Race resumed.')}else{running=false;cancelAnimationFrame(raf);$('pauseBtn').textContent='Resume';setMsg('Race paused.');}}
+function tick(now){if(!running)return;if(!last)last=now;const dt=Math.min(.04,(now-last)/1000);last=now;elapsed+=dt;simulate(dt);render();if(distance>=cfg.distance){distance=cfg.distance;finish();return}raf=requestAnimationFrame(tick)}
+function simulate(dt){
+const input=(held.has(-1)||keys.has('ArrowLeft')||keys.has('a')?-1:0)+(held.has(1)||keys.has('ArrowRight')||keys.has('d')?1:0);
+const cycle=60/cfg.rate;
+strokePhase=(strokePhase+dt/cycle)%1;
+// Stroke cycle: drive from catch through the first half; the strongest acceleration occurs during the drive.
+const drive=strokePhase<.53?Math.sin(Math.PI*strokePhase/.53):0;
+const release=strokePhase>=.48&&strokePhase<=.62?Math.sin(Math.PI*(strokePhase-.48)/.14):0;
+const base=cfg.crew===8?5.65:5.45;
+const rateFactor=clamp(cfg.rate/28,.86,1.12);
+const windSide=Math.sin(windAngle),headwind=(1-Math.cos(windAngle))*.5;
+const off=x<22||x>78,edge=x<27||x>73;
+const headingError=Math.abs(heading);
+const steerPenalty=clamp(headingError/35,0,.55);
+const lanePenalty=off?.20:edge?.07:0;
+// Small occasional heading jolts require correction without randomly throwing the boat off course.
+joltClock+=dt;
+if(joltClock>nextJolt){heading=clamp(heading+rand(-2.4,2.4),-38,38);joltClock=0;nextJolt=rand(3.5,7.5);}
+const windPush=windSide*windPower*.42;
+heading=clamp(heading+input*42*dt+windPush*.9*dt,-38,38);
+// Steering changes the momentum vector; the boat keeps travelling and gradually turns toward its heading.
+const desiredXVelocity=Math.sin(heading*Math.PI/180)*1.5+windPush*.18;
+x=clamp(x+desiredXVelocity*dt,-1,101);
+const driveBoost=drive*1.15;
+const target=base*rateFactor*(1-headwind*.16)*(1-steerPenalty)*(1-lanePenalty)+driveBoost;
+speed+=(target-speed)*Math.min(1,dt*(drive>0?2.6:0.65));
+speed=clamp(speed,0,6.8);
+distance+=speed*dt;
+waterShift=(waterShift+dt*(28+speed*8))%80;water.style.setProperty('--water-shift',waterShift+'px');
+windClock+=dt;if(windClock>(cfg.difficulty==='easy'?7:cfg.difficulty==='hard'?2.7:4.5)){windClock=0;changeWind();}
+if(off)score-=dt*28;else if(edge)score-=dt*7;else score+=dt*2.5;
+score=clamp(score,0,1000);
+const phaseAngle=Math.sin(strokePhase*Math.PI*2)*28;
+document.querySelectorAll('#oars .oar').forEach(o=>{const side=o.dataset.side;const sideSign=side==='left'?-1:1;o.style.setProperty('--angle',(sideSign*(25+phaseAngle))+'deg');});
+}
+function render(){boat.style.left=x+'%';boat.style.transform=`translateX(-50%) rotate(${heading*.42}deg)`;$('distanceStat').textContent=Math.min(cfg.distance,Math.round(distance)).toLocaleString()+' m';$('timeStat').textContent=fmt(elapsed);$('scoreStat').textContent=Math.round(score).toLocaleString();$('speedStat').textContent=speed.toFixed(1)+' m/s';const off=x<22||x>78,edge=x<27||x>73;$('laneStat').textContent=off?'OUTSIDE LANE':edge?'Near edge':'In lane';$('laneStat').style.color=off?'#b42318':edge?'#a05a00':'#147d54';$('laneBar').style.width=score/10+'%';$('laneBar').style.background=score<400?'#b42318':score<700?'#f4a340':'#147d54';}
+function finish(){running=false;finished=true;cancelAnimationFrame(raf);$('pauseBtn').textContent='Finished';setMsg('FINISH — '+fmt(elapsed)+' · Final score '+Math.round(score)+'/1000 · '+strokeCount+' manual strokes.');}
+$('startRace').onclick=begin;$('pauseBtn').onclick=togglePause;$('resetBtn').onclick=()=>{reset(false);changeWind();running=true;last=0;raf=requestAnimationFrame(tick);$('pauseBtn').textContent='Pause'};$('menuBtn').onclick=()=>{reset(true);preview()};
+$('strokeBtn').onclick=stroke;
+document.querySelectorAll('[data-call]').forEach(b=>b.onclick=()=>setMsg('COX CALL: '+b.dataset.call));
+function hold(btn,val){const down=e=>{e.preventDefault();held.add(val)},up=e=>{e.preventDefault();held.delete(val)};btn.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(ev=>btn.addEventListener(ev,up));}
+hold($('steerBow'),-1);hold($('steerStroke'),1);
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(['ArrowLeft','ArrowRight',' ','a','A','d','D','p','P','r','R'].includes(e.key)||/^[0-9]$/.test(e.key))e.preventDefault();if(/^[0-9]$/.test(e.key)){const n=e.key==='0'?10:+e.key;const btn=document.querySelector('[data-call]:nth-child('+n+')');if(btn){btn.click()}return}if(e.key===' '){if(!e.repeat)stroke();return}if(e.key==='p'||e.key==='P'){togglePause();return}if(e.key==='r'||e.key==='R'){if(!view.classList.contains('hidden'))$('resetBtn').click();return}keys.add(e.key==='A'?'a':e.key==='D'?'d':e.key)});
+document.addEventListener('keyup',e=>{keys.delete(e.key);keys.delete(e.key.toLowerCase())});
+window.addEventListener('resize',()=>{if(!view.classList.contains('hidden'))setupCourse()});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+})();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>
